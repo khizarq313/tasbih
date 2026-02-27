@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="Tasbih - premium offline digital tally counter" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" href="./assets/icons/icon-192.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="./assets/icons/icon-192.svg" />
+    <link rel="stylesheet" href="./src/css/styles.css" />
+    <title>Tasbih</title>
+  </head>
+  <body>
+    <main class="app" aria-live="polite">
+      <header class="top-controls" role="group" aria-label="Counter Controls">
+        <div class="select-wrap" id="stepSelectWrap">
+          <button id="stepToggle" class="pill-btn" type="button" aria-haspopup="listbox" aria-expanded="false">
+            <span id="selectedStepLabel">+1</span>
+            <span class="chev" aria-hidden="true"></span>
+          </button>
+          <ul id="stepMenu" class="step-menu" role="listbox" tabindex="-1" aria-label="Increment step"></ul>
+        </div>
+        <button id="editBtn" class="pill-btn" type="button">Edit</button>
+        <button id="resetBtn" class="pill-btn" type="button">Reset</button>
+      </header>
+
+      <section id="tapZone" class="tap-zone" aria-label="Tap zone for increment">
+        <button id="countDisplayBtn" class="count-display-btn" type="button" aria-label="Edit current count">
+          <span id="countDisplay" class="count-display" aria-atomic="true">0</span>
+        </button>
+
+        <button id="mainIncrementBtn" class="main-btn" type="button" aria-label="Increment counter">
+          <span class="arrow-up" aria-hidden="true"></span>
+        </button>
+
+        <button id="decrementBtn" class="decrement-btn" type="button" aria-label="Decrement counter">
+          <span class="arrow-down" aria-hidden="true"></span>
+        </button>
+      </section>
+
+      <section class="feedback-controls" aria-label="Feedback controls">
+        <button id="soundToggle" class="toggle-btn" type="button" aria-pressed="true">Sound: ON</button>
+        <button id="vibrationToggle" class="toggle-btn" type="button" aria-pressed="true">Vibration: ON</button>
+      </section>
+
+      <p class="credit-line">
+        <span class="credit-muted">made by </span>
+        <a class="credit-link" href="https://github.com/khizarq313" target="_blank" rel="noopener noreferrer">Khizar</a>
+      </p>
+    </main>
+
+    <dialog id="editDialog" class="edit-dialog" aria-labelledby="editDialogTitle">
+      <form method="dialog" class="edit-form" id="editForm">
+        <h2 id="editDialogTitle">Edit Count</h2>
+        <label for="editCountInput">Set current count</label>
+        <div id="editInputWrap" class="edit-input-wrap" tabindex="0">
+          <input id="editCountInput" name="count" type="number" inputmode="numeric" min="0" step="1" required />
+        </div>
+        <menu>
+          <button value="cancel" type="submit" class="pill-btn">Cancel</button>
+          <button id="editConfirmBtn" value="confirm" type="submit" class="pill-btn confirm">Save</button>
+        </menu>
+      </form>
+    </dialog>
+
+    <dialog id="resetDialog" class="edit-dialog confirm-dialog" aria-labelledby="resetDialogTitle">
+      <form method="dialog" class="edit-form" id="resetForm">
+        <h2 id="resetDialogTitle">Reset Counter</h2>
+        <p class="confirm-text">Are you sure you want to reset the current count to 0?</p>
+        <menu>
+          <button value="cancel" type="submit" class="pill-btn">Cancel</button>
+          <button id="resetConfirmBtn" value="confirm" type="submit" class="pill-btn confirm">Confirm</button>
+        </menu>
+      </form>
+    </dialog>
+
+    <script type="module" src="./src/js/main.js"></script>
+  </body>
+</html>
