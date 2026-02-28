@@ -1,4 +1,4 @@
-const CACHE_NAME = "tasbih-pro-cache-v6";
+const CACHE_NAME = "tasbih-pro-cache-v7";
 const APP_SHELL = [
   "./",
   "./index.html",

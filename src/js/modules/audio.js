@@ -74,7 +74,8 @@ const hasVibrationSupport = () => {
   }
 };
 
-const PREMIUM_PULSE = [22];
+const PULSE_STANDARD = 22;
+const PULSE_STRONG = 32;
 let lastVibrationAt = 0;
 
 export const isVibrationSupported = () => hasVibrationSupport();
@@ -86,19 +87,20 @@ export const stopVibration = () => {
   navigator.vibrate(0);
 };
 
-export const triggerVibration = () => {
+export const triggerVibration = ({ strong = false } = {}) => {
   if (!hasVibrationSupport()) {
     return false;
   }
 
   const now = performance.now();
-  if (now - lastVibrationAt < 70) {
+  if (now - lastVibrationAt < 35) {
     return false;
   }
   lastVibrationAt = now;
 
   try {
-    return navigator.vibrate(PREMIUM_PULSE);
+    navigator.vibrate(0);
+    return navigator.vibrate(strong ? PULSE_STRONG : PULSE_STANDARD);
   } catch {
     return false;
   }

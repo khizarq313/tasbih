@@ -11,6 +11,13 @@ const sound = createSoundEngine();
 const vibrationSupported = isVibrationSupported();
 
 const save = () => persistState(state);
+const shouldVibrate = () => vibrationSupported && state.vibrationEnabled;
+const pulseHaptic = () => {
+  if (!shouldVibrate()) {
+    return;
+  }
+  triggerVibration({ strong: !state.soundEnabled });
+};
 
 const render = ({ animate = false, direction = "up", previousValue = state.currentCount } = {}) => {
   if (animate) {
@@ -43,7 +50,11 @@ const applyDayRollover = () => {
   }
 };
 
-const increment = ({ animate = true, fromBackground = false } = {}) => {
+const increment = ({ animate = true, fromBackground = false, withHaptic = false } = {}) => {
+  if (withHaptic) {
+    pulseHaptic();
+  }
+
   applyDayRollover();
   const previousValue = state.currentCount;
   actions.increment();
@@ -52,8 +63,8 @@ const increment = ({ animate = true, fromBackground = false } = {}) => {
     sound.playIncrement();
   }
 
-  if (vibrationSupported && state.vibrationEnabled) {
-    triggerVibration();
+  if (!withHaptic) {
+    pulseHaptic();
   }
 
   if (fromBackground) {
@@ -138,7 +149,7 @@ const setupStepMenu = () => {
 const setupCounterControls = () => {
   ui.els.mainIncrementBtn.addEventListener("click", (event) => {
     event.stopPropagation();
-    increment({ animate: true });
+    increment({ animate: true, withHaptic: true });
   });
 
   ui.els.mainIncrementBtn.addEventListener("pointerdown", () => {
@@ -170,7 +181,7 @@ const setupCounterControls = () => {
       return;
     }
 
-    increment({ animate: true, fromBackground: true });
+    increment({ animate: true, fromBackground: true, withHaptic: true });
   });
 };
 
@@ -189,7 +200,7 @@ const setupKeyboard = () => {
       }
 
       if (event.key === "ArrowUp") {
-        increment({ animate: true });
+        increment({ animate: true, withHaptic: true });
       } else {
         decrement({ animate: true });
       }
