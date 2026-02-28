@@ -6,7 +6,6 @@ const createDefaults = () => ({
   currentCount: 0,
   step: 1,
   soundEnabled: true,
-  vibrationEnabled: true,
   dailyHistory: { [nowDate()]: 0 },
   lifetimeTotal: 0,
   lastActiveDate: nowDate()
@@ -39,7 +38,6 @@ const normalizeRecord = (value) => {
     currentCount: safeCurrent,
     step: safeStep,
     soundEnabled: Boolean(value.soundEnabled ?? defaults.soundEnabled),
-    vibrationEnabled: Boolean(value.vibrationEnabled ?? defaults.vibrationEnabled),
     dailyHistory: safeHistory,
     lifetimeTotal: safeLifetime,
     lastActiveDate: /^\d{4}-\d{2}-\d{2}$/.test(value.lastActiveDate) ? value.lastActiveDate : defaults.lastActiveDate

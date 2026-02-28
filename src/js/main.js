@@ -1,4 +1,4 @@
-import { createSoundEngine, isVibrationSupported, stopVibration, triggerVibration } from "./modules/audio.js";
+import { createSoundEngine } from "./modules/audio.js";
 import { STEPS } from "./modules/config.js";
 import { loadState, persistState } from "./modules/storage.js";
 import { createActions, rolloverIfNeeded } from "./modules/state.js";
@@ -8,16 +8,8 @@ const state = loadState();
 const actions = createActions(state);
 const ui = createUI();
 const sound = createSoundEngine();
-const vibrationSupported = isVibrationSupported();
 
 const save = () => persistState(state);
-const shouldVibrate = () => vibrationSupported && state.vibrationEnabled;
-const pulseHaptic = () => {
-  if (!shouldVibrate()) {
-    return;
-  }
-  triggerVibration({ strong: !state.soundEnabled });
-};
 
 const render = ({ animate = false, direction = "up", previousValue = state.currentCount } = {}) => {
   if (animate) {
@@ -29,11 +21,6 @@ const render = ({ animate = false, direction = "up", previousValue = state.curre
 
   ui.els.soundToggle.setAttribute("aria-pressed", String(state.soundEnabled));
   ui.els.soundToggle.textContent = `Sound: ${state.soundEnabled ? "ON" : "OFF"}`;
-  ui.els.vibrationToggle.setAttribute("aria-pressed", String(state.vibrationEnabled));
-  ui.els.vibrationToggle.textContent = vibrationSupported
-    ? `Vibration: ${state.vibrationEnabled ? "ON" : "OFF"}`
-    : "Vibration: N/A";
-  ui.els.vibrationToggle.disabled = !vibrationSupported;
   ui.els.resetBtn.disabled = state.currentCount === 0;
   ui.els.selectedStepLabel.textContent = `+${state.step}`;
 
@@ -50,21 +37,13 @@ const applyDayRollover = () => {
   }
 };
 
-const increment = ({ animate = true, fromBackground = false, withHaptic = false } = {}) => {
-  if (withHaptic) {
-    pulseHaptic();
-  }
-
+const increment = ({ animate = true, fromBackground = false } = {}) => {
   applyDayRollover();
   const previousValue = state.currentCount;
   actions.increment();
 
   if (state.soundEnabled) {
     sound.playIncrement();
-  }
-
-  if (!withHaptic) {
-    pulseHaptic();
   }
 
   if (fromBackground) {
@@ -147,13 +126,13 @@ const setupStepMenu = () => {
 };
 
 const setupCounterControls = () => {
-  ui.els.mainIncrementBtn.addEventListener("click", (event) => {
-    event.stopPropagation();
-    increment({ animate: true, withHaptic: true });
-  });
-
   ui.els.mainIncrementBtn.addEventListener("pointerdown", () => {
     ui.els.mainIncrementBtn.classList.add("pressed");
+  });
+
+  ui.els.mainIncrementBtn.addEventListener("click", (event) => {
+    event.stopPropagation();
+    increment({ animate: true });
   });
 
   const releaseMainPress = () => ui.els.mainIncrementBtn.classList.remove("pressed");
@@ -181,7 +160,7 @@ const setupCounterControls = () => {
       return;
     }
 
-    increment({ animate: true, fromBackground: true, withHaptic: true });
+    increment({ animate: true, fromBackground: true });
   });
 };
 
@@ -200,7 +179,7 @@ const setupKeyboard = () => {
       }
 
       if (event.key === "ArrowUp") {
-        increment({ animate: true, withHaptic: true });
+        increment({ animate: true });
       } else {
         decrement({ animate: true });
       }
@@ -212,18 +191,6 @@ const setupKeyboard = () => {
 const setupButtons = () => {
   ui.els.soundToggle.addEventListener("click", () => {
     actions.toggleSound();
-    save();
-    render();
-  });
-
-  ui.els.vibrationToggle.addEventListener("click", () => {
-    if (!vibrationSupported) {
-      return;
-    }
-    actions.toggleVibration();
-    if (!state.vibrationEnabled) {
-      stopVibration();
-    }
     save();
     render();
   });

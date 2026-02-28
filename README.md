@@ -14,7 +14,6 @@ Built with **HTML5, CSS3, and Vanilla JavaScript** — no frameworks, no depende
 - ⌨ Keyboard support (`↑` increment / `↓` decrement)
 - 💾 localStorage persistence (count, step, sound state)
 - 🔊 Optional click sound (toggle ON/OFF)
-- 📳 Subtle vibration feedback (mobile)
 - 📱 Fully responsive (mobile, tablet, desktop)
 - 📦 Installable PWA with offline support
 
@@ -28,7 +27,6 @@ Built with **HTML5, CSS3, and Vanilla JavaScript** — no frameworks, no depende
 - Service Worker  
 - Web Storage API  
 - Web Audio API  
-- Vibration API  
 
 No frameworks.  
 No external libraries.  

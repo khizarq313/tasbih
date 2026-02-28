@@ -16,7 +16,6 @@ export const createUI = () => {
     mainIncrementBtn: document.getElementById("mainIncrementBtn"),
     decrementBtn: document.getElementById("decrementBtn"),
     soundToggle: document.getElementById("soundToggle"),
-    vibrationToggle: document.getElementById("vibrationToggle"),
     editDialog: document.getElementById("editDialog"),
     editForm: document.getElementById("editForm"),
     editConfirmBtn: document.getElementById("editConfirmBtn"),

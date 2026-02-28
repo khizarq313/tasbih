@@ -52,9 +52,6 @@ export const createActions = (state) => ({
   toggleSound() {
     state.soundEnabled = !state.soundEnabled;
   },
-  toggleVibration() {
-    state.vibrationEnabled = !state.vibrationEnabled;
-  },
   resetToday() {
     const today = ensureToday(state);
     const removed = clampNonNegative(state.currentCount);
