@@ -1,4 +1,4 @@
-import { createSoundEngine, triggerVibration } from "./modules/audio.js";
+import { createSoundEngine, isVibrationSupported, stopVibration, triggerVibration } from "./modules/audio.js";
 import { STEPS } from "./modules/config.js";
 import { loadState, persistState } from "./modules/storage.js";
 import { createActions, rolloverIfNeeded } from "./modules/state.js";
@@ -8,6 +8,7 @@ const state = loadState();
 const actions = createActions(state);
 const ui = createUI();
 const sound = createSoundEngine();
+const vibrationSupported = isVibrationSupported();
 
 const save = () => persistState(state);
 
@@ -22,7 +23,10 @@ const render = ({ animate = false, direction = "up", previousValue = state.curre
   ui.els.soundToggle.setAttribute("aria-pressed", String(state.soundEnabled));
   ui.els.soundToggle.textContent = `Sound: ${state.soundEnabled ? "ON" : "OFF"}`;
   ui.els.vibrationToggle.setAttribute("aria-pressed", String(state.vibrationEnabled));
-  ui.els.vibrationToggle.textContent = `Vibration: ${state.vibrationEnabled ? "ON" : "OFF"}`;
+  ui.els.vibrationToggle.textContent = vibrationSupported
+    ? `Vibration: ${state.vibrationEnabled ? "ON" : "OFF"}`
+    : "Vibration: N/A";
+  ui.els.vibrationToggle.disabled = !vibrationSupported;
   ui.els.resetBtn.disabled = state.currentCount === 0;
   ui.els.selectedStepLabel.textContent = `+${state.step}`;
 
@@ -48,7 +52,7 @@ const increment = ({ animate = true, fromBackground = false } = {}) => {
     sound.playIncrement();
   }
 
-  if (state.vibrationEnabled) {
+  if (vibrationSupported && state.vibrationEnabled) {
     triggerVibration();
   }
 
@@ -202,7 +206,13 @@ const setupButtons = () => {
   });
 
   ui.els.vibrationToggle.addEventListener("click", () => {
+    if (!vibrationSupported) {
+      return;
+    }
     actions.toggleVibration();
+    if (!state.vibrationEnabled) {
+      stopVibration();
+    }
     save();
     render();
   });

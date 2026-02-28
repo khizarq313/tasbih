@@ -61,8 +61,45 @@ export const createSoundEngine = () => {
   return { playIncrement };
 };
 
+const hasVibrationSupport = () => {
+  if (typeof navigator === "undefined" || typeof navigator.vibrate !== "function") {
+    return false;
+  }
+
+  try {
+    navigator.vibrate(0);
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+const PREMIUM_PULSE = [22];
+let lastVibrationAt = 0;
+
+export const isVibrationSupported = () => hasVibrationSupport();
+
+export const stopVibration = () => {
+  if (!hasVibrationSupport()) {
+    return;
+  }
+  navigator.vibrate(0);
+};
+
 export const triggerVibration = () => {
-  if (typeof navigator !== "undefined" && typeof navigator.vibrate === "function") {
-    navigator.vibrate(10);
+  if (!hasVibrationSupport()) {
+    return false;
+  }
+
+  const now = performance.now();
+  if (now - lastVibrationAt < 70) {
+    return false;
+  }
+  lastVibrationAt = now;
+
+  try {
+    return navigator.vibrate(PREMIUM_PULSE);
+  } catch {
+    return false;
   }
 };

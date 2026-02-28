@@ -1,7 +1,44 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="100" fill="#000000"/>
-  <circle cx="256" cy="256" r="168" fill="#04412b" stroke="#1df89a" stroke-width="14"/>
-  <path d="M164 300l92-92 92 92" fill="none" stroke="#1df89a" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="256" cy="364" r="50" fill="#065336" stroke="#1df89a" stroke-width="9"/>
-  <path d="M232 360l24 24 24-24" fill="none" stroke="#1df89a" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#122029"/>
+      <stop offset="1" stop-color="#020406"/>
+    </linearGradient>
+    <radialGradient id="bead" cx="35%" cy="30%" r="70%">
+      <stop offset="0" stop-color="#9fb8c2"/>
+      <stop offset="1" stop-color="#35525f"/>
+    </radialGradient>
+    <radialGradient id="accent" cx="35%" cy="30%" r="75%">
+      <stop offset="0" stop-color="#31ffad"/>
+      <stop offset="1" stop-color="#0b7a47"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="512" height="512" rx="100" fill="url(#bg)"/>
+
+  <g fill="url(#bead)">
+    <circle cx="136" cy="254" r="21.3"/>
+    <circle cx="153" cy="219" r="19.4"/>
+    <circle cx="177" cy="190" r="18.1"/>
+    <circle cx="209" cy="166" r="16.8"/>
+    <circle cx="245" cy="149" r="15.4"/>
+    <circle cx="283" cy="149" r="15.4"/>
+    <circle cx="320" cy="166" r="16.8"/>
+    <circle cx="352" cy="190" r="18.1"/>
+    <circle cx="376" cy="219" r="19.4"/>
+    <circle cx="393" cy="254" r="21.3"/>
+    <circle cx="368" cy="284" r="22.4"/>
+    <circle cx="337" cy="306" r="23.8"/>
+    <circle cx="302" cy="321" r="25.3"/>
+    <circle cx="210" cy="321" r="25.3"/>
+    <circle cx="175" cy="306" r="23.8"/>
+    <circle cx="144" cy="284" r="22.4"/>
+  </g>
+
+  <circle cx="256" cy="336" r="34.6" fill="url(#accent)"/>
+  <circle cx="256" cy="387" r="15.5" fill="#0ea960"/>
+
+  <path d="M256 399 C240 427, 241 447, 261 464 C248 455, 242 438, 242 415" fill="none" stroke="#169a5c" stroke-width="9" stroke-linecap="round"/>
+  <path d="M256 399 C267 425, 275 444, 296 451 C279 446, 269 431, 260 414" fill="none" stroke="#2acc79" stroke-width="8" stroke-linecap="round"/>
+  <path d="M256 399 C250 429, 259 449, 282 465" fill="none" stroke="#1eb46a" stroke-width="7" stroke-linecap="round"/>
 </svg>
